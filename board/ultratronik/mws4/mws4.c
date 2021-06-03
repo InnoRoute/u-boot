@@ -20,9 +20,6 @@
 #include <net.h>
 #include <ns16550.h>
 #include <serial.h>
-#ifdef CONFIG_LED_STATUS
-#include <status_led.h>
-#endif
 #include <twl4030.h>
 #include <linux/mtd/rawnand.h>
 #include <asm/io.h>
@@ -83,9 +80,6 @@ int board_init(void)
 	/* boot param addr */
 	gd->bd->bi_boot_params = (OMAP34XX_SDRC_CS0 + 0x100);
 
-#if defined(CONFIG_LED_STATUS) && defined(CONFIG_LED_STATUS_BOOT_ENABLE)
-	status_led_set(CONFIG_LED_STATUS_BOOT, CONFIG_LED_STATUS_ON);
-#endif
 printf("Support InnoRoute.de\n");
 	return 0;
 }
