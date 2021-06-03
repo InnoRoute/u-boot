@@ -42,6 +42,15 @@ config TARGET_OMAP3_BEAGLE
 	select OMAP3_GPIO_5
 	select OMAP3_GPIO_6
 	imply CMD_DM
+	
+config TARGET_OMAP3_MWS4
+	bool "Ultratrokik OMAP3 MWS4"
+	select DM
+	select DM_GPIO
+	select DM_SERIAL
+	select OMAP3_GPIO_5
+	select OMAP3_GPIO_6
+	imply CMD_DM
 
 config TARGET_CM_T35
 	bool "CompuLab CM-T3530 and CM-T3730 boards"
@@ -160,7 +169,7 @@ config SPL_OMAP3_ID_NAND
 
 config SYS_SOC
 	default "omap3"
-
+source "board/ultratronik/mws4/Kconfig"
 source "board/logicpd/am3517evm/Kconfig"
 source "board/ti/beagle/Kconfig"
 source "board/timll/devkit8000/Kconfig"

@@ -874,6 +874,14 @@ dtb-$(CONFIG_TARGET_OMAP3_BEAGLE) += \
 	omap3-beagle-xm-ab.dtb \
 	omap3-beagle-xm.dtb \
 	omap3-beagle.dtb
+	
+dtb-$(CONFIG_TARGET_OMAP3_MWS4) += \
+	omap3-mws4.dtb 
+#	omap3-mws4_2.dtb \
+#	omap3-mws4_3.dtb
+#	omap3-beagle-xm-ab.dtb \
+#	omap3-beagle-xm.dtb \
+#	omap3-beagle.dtb
 
 dtb-$(CONFIG_TARGET_OMAP3_IGEP00X0) += \
 	omap3-igep0020.dtb
