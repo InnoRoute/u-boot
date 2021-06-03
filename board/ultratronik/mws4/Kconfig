@@ -1,0 +1,12 @@
+if TARGET_OMAP3_MWS4
+
+config SYS_BOARD
+	default "mws4"
+
+config SYS_VENDOR
+	default "ultratronik"
+
+config SYS_CONFIG_NAME
+	default "omap3_mws4"
+
+endif
