@@ -1,6 +1,6 @@
-BEAGLE BOARD
-M:	Tom Rini <trini@konsulko.com>
+MWS4 BfS
+M:	M. Ulbricht <ulbricht@innoroute.de>
 S:	Maintained
-F:	board/ti/beagle/
-F:	include/configs/omap3_beagle.h
-F:	configs/omap3_beagle_defconfig
+F:	board/ultratronik/mws4/
+F:	include/configs/omap3_mws4.h
+F:	configs/omap3_mws4_defconfig
