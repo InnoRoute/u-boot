@@ -12,6 +12,7 @@
  *	Syed Mohammed Khasim <khasim@ti.com>
  *
  */
+// mod for BfS ulbricht@innoroute.de 2021
 #include <common.h>
 #include <bootstage.h>
 #include <dm.h>
