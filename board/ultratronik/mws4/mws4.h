@@ -3,6 +3,7 @@
  * (C) Copyright 2008
  * Dirk Behme <dirk.behme@gmail.com>
  */
+// mod for BfS ulbricht@innoroute.de 2021
 #ifndef _BEAGLE_H_
 #define _BEAGLE_H_
 
