@@ -37,6 +37,8 @@
 #include <linux/usb/musb.h>
 #include "mws4.h"
 #include <command.h>
+#include <usb.h>
+#include <asm/ehci-omap.h>
 
 #define TWL4030_I2C_BUS			0
 #define EXPANSION_EEPROM_I2C_BUS	1
@@ -68,6 +70,29 @@ static struct {
 	char env_var[16];
 	char env_setting[64];
 } expansion_config;
+
+
+
+/* Call usb_stop() before starting the kernel */
+void show_boot_progress(int val)
+{
+        if (val == BOOTSTAGE_ID_RUN_OS)
+                usb_stop();
+}
+
+static struct omap_usbhs_board_data usbhs_bdata = {
+        .port_mode[0] = OMAP_EHCI_PORT_MODE_PHY
+};
+
+int ehci_hcd_init(int index, struct ehci_hccr **hccr, struct ehci_hcor **hcor)
+{
+        return omap_ehci_hcd_init(&usbhs_bdata, hccr, hcor);
+}
+
+int ehci_hcd_stop(int index)
+{
+        return omap_ehci_hcd_stop();
+}
 
 /*
  * Routine: board_init
