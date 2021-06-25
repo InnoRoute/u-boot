@@ -270,7 +270,7 @@ env_set("buddy", "none");
 					TWL4030_PM_RECEIVER_VAUX2_DEV_GRP,
 					TWL4030_PM_RECEIVER_DEV_GRP_P1);
 
-	dieid_num_r();
+	//dieid_num_r();
 /*#ifdef CONFIG_VIDEO_OMAP3*/
 /*	beagle_dvi_pup();*/
 /*	beagle_display_init();*/
