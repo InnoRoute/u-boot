@@ -253,18 +253,24 @@ env_set("buddy", "none");
 	twl4030_power_init();
 
 	/* Set GPIO states before they are made outputs */
-	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,
-		&gpio6_base->setdataout);
-	writel(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
-		GPIO15 | GPIO14 | GPIO13 | GPIO12, &gpio5_base->setdataout);
+/*	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,*/
+/*		&gpio6_base->setdataout);*/
+/*	writel(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |*/
+/*		GPIO15 | GPIO14 | GPIO13 | GPIO12, &gpio5_base->setdataout);*/
 
-	/* Configure GPIOs to output */
-	writel(~(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1), &gpio6_base->oe);
-	writel(~(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |
-		GPIO15 | GPIO14 | GPIO13 | GPIO12), &gpio5_base->oe);
+/*	/* Configure GPIOs to output */*/
+/*	writel(~(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1), &gpio6_base->oe);*/
+/*	writel(~(GPIO31 | GPIO30 | GPIO29 | GPIO28 | GPIO22 | GPIO21 |*/
+/*		GPIO15 | GPIO14 | GPIO13 | GPIO12), &gpio5_base->oe);*/
 
 	omap_die_id_display();
+/* Set VAUX2 to 1.8V for EHCI PHY */
+	twl4030_pmrecv_vsel_cfg(TWL4030_PM_RECEIVER_VAUX2_DEDICATED,
+					TWL4030_PM_RECEIVER_VAUX2_VSEL_18,
+					TWL4030_PM_RECEIVER_VAUX2_DEV_GRP,
+					TWL4030_PM_RECEIVER_DEV_GRP_P1);
 
+	dieid_num_r();
 /*#ifdef CONFIG_VIDEO_OMAP3*/
 /*	beagle_dvi_pup();*/
 /*	beagle_display_init();*/
