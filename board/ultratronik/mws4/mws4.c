@@ -160,67 +160,20 @@ static int get_board_revision(void)
 /*
  * Routine: get_board_mem_timings
  * Description: If we use SPL then there is no x-loader nor config header
- * so we have to setup the DDR timings ourself on both banks.
+ * so we have to setup the DDR timings ourself on the first bank.  This
+ * provides the timing values back to the function that configures
+ * the memory.
  */
 void get_board_mem_timings(struct board_sdrc_timings *timings)
 {
 	int pop_mfr, pop_id;
-
-	/*
-	 * We need to identify what PoP memory is on the board so that
-	 * we know what timings to use.  If we can't identify it then
-	 * we know it's an xM.  To map the ID values please see nand_ids.c
-	 */
-	identify_nand_chip(&pop_mfr, &pop_id);
-
+	
+	/* 256MB DDR */
+	timings->mcfg = HYNIX_V_MCFG_200(256 << 20);
+	timings->ctrla = HYNIX_V_ACTIMA_200;
+	timings->ctrlb = HYNIX_V_ACTIMB_200;
+	timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
 	timings->mr = MICRON_V_MR_165;
-	switch (get_board_revision()) {
-	case REVISION_C4:
-		if (pop_mfr == NAND_MFR_STMICRO && pop_id == 0xba) {
-			/* 512MB DDR */
-			timings->mcfg = NUMONYX_V_MCFG_165(512 << 20);
-			timings->ctrla = NUMONYX_V_ACTIMA_165;
-			timings->ctrlb = NUMONYX_V_ACTIMB_165;
-			timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-			break;
-		} else if (pop_mfr == NAND_MFR_MICRON && pop_id == 0xba) {
-			/* Beagleboard Rev C4, 512MB Nand/256MB DDR*/
-			timings->mcfg = MICRON_V_MCFG_165(128 << 20);
-			timings->ctrla = MICRON_V_ACTIMA_165;
-			timings->ctrlb = MICRON_V_ACTIMB_165;
-			timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-			break;
-		} else if (pop_mfr == NAND_MFR_MICRON && pop_id == 0xbc) {
-			/* Beagleboard Rev C5, 256MB DDR */
-			timings->mcfg = MICRON_V_MCFG_200(256 << 20);
-			timings->ctrla = MICRON_V_ACTIMA_200;
-			timings->ctrlb = MICRON_V_ACTIMB_200;
-			timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
-			break;
-		}
-	case REVISION_XM_AB:
-	case REVISION_XM_C:
-		if (pop_mfr == 0) {
-			/* 256MB DDR */
-			timings->mcfg = MICRON_V_MCFG_200(256 << 20);
-			timings->ctrla = MICRON_V_ACTIMA_200;
-			timings->ctrlb = MICRON_V_ACTIMB_200;
-			timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_200MHz;
-		} else {
-			/* 512MB DDR */
-			timings->mcfg = NUMONYX_V_MCFG_165(512 << 20);
-			timings->ctrla = NUMONYX_V_ACTIMA_165;
-			timings->ctrlb = NUMONYX_V_ACTIMB_165;
-			timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-		}
-		break;
-	default:
-		/* Assume 128MB and Micron/165MHz timings to be safe */
-		timings->mcfg = MICRON_V_MCFG_165(128 << 20);
-		timings->ctrla = MICRON_V_ACTIMA_165;
-		timings->ctrlb = MICRON_V_ACTIMB_165;
-		timings->rfr_ctrl = SDP_3430_SDRC_RFR_CTRL_165MHz;
-	}
 }
 #endif
 
