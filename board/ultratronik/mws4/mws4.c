@@ -107,6 +107,16 @@ int board_init(void)
 	gd->bd->bi_boot_params = (OMAP34XX_SDRC_CS0 + 0x100);
 
 printf("Support InnoRoute.de\n");
+
+	twl4030_power_init();
+	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0xC0);
+	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0x0C);
+		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_CFG_BOOT, 0x19);	
+		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0x00);	
 	return 0;
 }
 
@@ -203,15 +213,7 @@ env_set("beaglerev", "AxBx");
 
 env_set("buddy", "none");
 
-	twl4030_power_init();
-	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
-			     TWL4030_PM_MASTER_PROTECT_KEY, 0xC0);
-	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
-			     TWL4030_PM_MASTER_PROTECT_KEY, 0x0C);
-		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
-			     TWL4030_PM_MASTER_CFG_BOOT, 0x19);	
-		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
-			     TWL4030_PM_MASTER_PROTECT_KEY, 0x00);		     		     
+	     		     
 
 	/* Set GPIO states before they are made outputs */
 /*	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,*/
