@@ -72,7 +72,7 @@ static struct {
 } expansion_config;
 
 
-#if  !defined(CONFIG_SPL_BUILD)
+//#if  !defined(CONFIG_SPL_BUILD)
 /* Call usb_stop() before starting the kernel */
 void show_boot_progress(int val)
 {
@@ -93,7 +93,7 @@ int ehci_hcd_stop(int index)
 {
         return omap_ehci_hcd_stop();
 }
-#endif
+//#endif
 /*
  * Routine: board_init
  * Description: Early hardware init.
@@ -204,6 +204,14 @@ env_set("beaglerev", "AxBx");
 env_set("buddy", "none");
 
 	twl4030_power_init();
+	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0xC0);
+	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0x0C);
+		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_CFG_BOOT, 0x19);	
+		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
+			     TWL4030_PM_MASTER_PROTECT_KEY, 0x00);		     		     
 
 	/* Set GPIO states before they are made outputs */
 /*	writel(GPIO23 | GPIO10 | GPIO8 | GPIO2 | GPIO1,*/
