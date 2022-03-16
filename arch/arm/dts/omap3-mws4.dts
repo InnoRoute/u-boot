@@ -7,135 +7,319 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+ // mod for BfS ulbricht@innoroute.de 2021
 /dts-v1/;
-
-#include "omap34xx.dtsi"
-
+// pinnumbering: 32PINS JE BANK
+//https://github.com/Moxa-Linux/BIOS-UC-8200_source_code/blob/master/arch/arm/include/asm/arch-omap3/mux.h fuer addressen
+//https://elixir.bootlin.com/linux/latest/source/arch/arm/boot/dts/omap3-cm-t3730.dts
+#include "omap36xx.dtsi"
 / {
 	model = "Ultratronik BFS MWS4";
-	compatible = "ti,omap3-mmi4", "ti,omap3";
-
-//	cpus {
-//		cpu@0 {
-//			cpu0-supply = <&vcc>;
-//		};
-//	};
-
+	compatible = "ti,omap3-mmi4", "ti,omap36xx", "ti,omap3";
+	
+	cpus {
+			cpu@0 {
+				cpu0-supply = <&vcc>;
+			};
+		};
 	memory {
 		device_type = "memory";
-		reg = <0x80000000 0x10000000>; /* 256 MB */
+		reg = <0x80000000 0x10000000>; // 256 MB 
 	};
-	
-	hwconfig {
-		i_enable_mmc = <1>;
-		i_enable_musb = <1>;
-		i_musb_mode = <1>;/*0-undefined, 1-HOST, 2-PERIPHERAL, 3-OTG*/
-		i_musb_power=<500>;
-		i_enable_ehci = <0>;
-		i_usb_reset_gpio = <20>;	/* DUMMY Entry */
-		i_enable_eth = <1>;
-		i_eth_irq_gpio = <130>;
-		i_eth_fifo_gpio = <0>;
-		i_eth_cs = <4>;
-		i_gpio_leds_0 = "led0:red", "none", "false", "102", "0";
-		i_gpio_leds_1 = "led1:yellow", "none", "false", "103", "0";
-		i_gpio_leds_2 = "led2:green", "none", "false", "104", "0";    
-		i_gpio_leds_3 = "led3:orange", "none", "false", "101", "0";
-		i_gpio_leds_4 = "usb:enable", "none", "false", "110", "1";
-		i_gpio_leds_5 = "usbhub:reset", "none", "false", "27", "0";
-		i_gpio_leds_6 = "iic:reset", "none", "false", "163", "0";
-		i_gpio_leds_7 = "rs232:reset", "none", "false", "26", "0";
-		i_i2c_bus_hw_2 = "2", "100";
-		i_i2c_device_0 = "rtc8564", "0x51", "2";
-		i_i2c_bus_hw_3 = "3", "100";
-		i_enable_flash = <1>;
-		i_enable_audio = <0>;
-		i_enable_video = <0>;
-		i_enable_can = <0>;
+	aliases {
+		i2c0 = &i2c1;
+		i2c1 = &i2c2;
+		i2c2 = &i2c3;
+		serial0 = &uart1;
+		serial1 = &uart2;
+		serial2 = &uart3;
+		mmc1 = &mmc1;
 	};
-	
-	ue_pinctrl {
-/* GPIO: HW ID */
-		pin_94 = "cam_hs.gpio_94", "IEN", "PTU", "DIS"; /* GPIO_94 */
-		pin_95 = "cam_vs.gpio_95", "IEN", "PTU", "DIS"; /* GPIO_95 */
-		pin_96 = "cam_xclka.gpio_96", "IEN", "PTU", "DIS"; /* GPIO_96 */
-				
-/* GPIO: Digital Out */
-		pin_156 = "mcbsp1_clkr.gpio_156", "IEN", "PTU", "DIS"; /* GPIO_156 */
-		pin_157 = "mcbsp1_fsr.gpio_157", "IEN", "PTU", "DIS"; /* GPIO_157 */
-		pin_158 = "mcbsp1_dx.gpio_158", "IEN", "PTU", "DIS"; /* GPIO_158 */
-		pin_159 = "mcbsp1_dr.gpio_159", "IEN", "PTU", "DIS"; /* GPIO_159 */
-		pin_160 = "mcbsp_clks.gpio_160", "IEN", "PTU", "DIS"; /* GPIO_160 */
-		pin_161 = "mcbsp1_fsx.gpio_161", "IEN", "PTU", "DIS"; /* GPIO_161 */
-		pin_162 = "mcbsp1_clkx.gpio_162", "IEN", "PTU", "DIS"; /*GPIO_162 */
-
-/* GPIO: Digital In */
-		pin_99 = "cam_d0.gpio_99", "IEN", "PTU", "DIS"; /* D_IN1_I */
-		pin_100 = "cam_d1.gpio_100", "IEN", "PTU", "DIS"; /* D_IN2_I */
-		pin_106 = "cam_d7.gpio_106", "IEN", "PTD", "DIS"; /* D_IN3_I */
-		pin_107 = "cam_d8.gpio_107", "IEN", "PTD", "DIS"; /* D_IN4_I */
-		pin_108 = "cam_d9.gpio_108", "IEN", "PTD", "DIS"; /* D_IN5_I */
-			
-/* GPIO: Watchdog Trigger */
-		pin_117 = "mcbsp2_clkx.gpio_117", "IDIS", "PTD", "DIS"; /* WD_TRIGGER */
-
-/* GPIO: TestAdapter */				
-		pin_171 = "mcspi1_clk.gpio_171", "IEN", "PTU", "DIS"; /* TP200 */
-		pin_172 = "mcspi1_simo.gpio_172", "IEN", "PTU", "DIS"; /* TP201 */
-		pin_173 = "mcspi1_somi.gpio_173", "IEN", "PTU", "DIS"; /* TP202 */
-		pin_174 = "mcspi1_cs0.gpio_174", "IEN", "PTU", "DIS"; /* TP203 */
-		pin_177 = "mcspi1_cs3.gpio_177", "IEN", "PTU", "DIS"; /* TP204 */
-		pin_178 = "mcspi2_clk.gpio_178", "IEN", "PTU", "DIS"; /* TP205 */
-		pin_179 = "mcspi2_simo.gpio_179", "IEN", "PTU", "DIS"; /* TP206 */
-		pin_180 = "mcspi2_somi.gpio_180", "IEN", "PTU", "DIS"; /* TP207 */	
-		pin_1 = "sys_clkreq.gpio_1", "IEN", "PTU", "DIS"; /* TP240 */
-		
-		
-/* USB0 */
-		pin_120 = "hsusb0_clk.hsusb0_clk", "IEN", "PTD", "DIS"; /* USB0 CLK */
-		pin_121 = "hsusb0_stp.hsusb0_stp", "IDIS", "PTU", "EN"; /* USB0 STP */
-		pin_122 = "hsusb0_dir.hsusb0_dir", "IEN", "PTD", "DIS"; /* USB0 DIR */
-		pin_124 = "hsusb0_nxt.hsusb0_nxt", "IEN", "PTD", "DIS"; /* USB0 NXT */
-		pin_125 = "hsusb0_data0.hsusb0_data0", "IEN", "PTD", "DIS"; /* USB0 D0 */
-		pin_0130 = "hsusb0_data1.hsusb0_data1", "IEN", "PTD", "DIS"; /* USB0 D1 */
-		pin_0131 = "hsusb0_data2.hsusb0_data2", "IEN", "PTD", "DIS"; /* USB0 D2 */
-		pin_169 = "hsusb0_data3.hsusb0_data3", "IEN", "PTD", "DIS"; /* USB0 D3 */
-		pin_188 = "hsusb0_data4.hsusb0_data4", "IEN", "PTD", "DIS"; /* USB0 D4 */
-		pin_189 = "hsusb0_data5.hsusb0_data5", "IEN", "PTD", "DIS"; /* USB0 D5 */
-		pin_190 = "hsusb0_data6.hsusb0_data6", "IEN", "PTD", "DIS"; /* USB0 D6 */
-		pin_191 = "hsusb0_data7.hsusb0_data7", "IEN", "PTD", "DIS"; /* USB0 D7 */
-		pin_110 = "cam_d11.gpio_110", "IEN", "PTD", "DIS"; /* #USB_OTG_RESET */
-		pin_27 = "etk_d13.gpio_27", "IEN", "PTD", "DIS"; /* #USB_HUB_RESET */
-
-/* SERIELL */
-		pin_148 = "uart1_tx.uart1_tx", "IDIS", "PTD", "DIS"; /* TXD1 */
-		pin_151 = "uart1_rx.uart1_rx", "IEN", "PTU", "EN"; /* RXD1 */
-		pin_149 = "uart1_rts.uart1_rts", "IDIS", "PTD", "DIS"; /* #RTS1 */
-		
-/* ETHERNET */
-		pin_55 = "gpmc_ncs4.gpmc_ncs4", "IEN", "PTU", "EN"; /* #GPMC_CS4 ETH */
-		pin_130 = "sdmmc2_clk.gpio_130", "IEN", "PTD", "DIS"; /* #ETH_IRQ */
-/* SD CARD */
-		pin_126 = "sdmmc1_dat4.gpio_126", "IEN", "PTD", "DIS";	/* SD_WP */
-		pin_59 = "gpmc_clk.gpio_59", "IEN", "PTD", "DIS"; /* #SD_CD */
-/* I2C #2 */
-		pin_168 = "i2c2_scl.i2c2_scl", "IEN", "PTU", "EN"; /* SCL2 */
-		pin_183 = "i2c2_sda.i2c2_sda", "IEN", "PTU", "EN"; /* SDA2 */
-
-/* I2C #3 */
-		pin_184 = "i2c3_scl.i2c3_scl", "IEN", "PTU", "EN"; /* SCL3 */
-		pin_185 = "i2c3_sda.i2c3_sda", "IEN", "PTU", "EN"; /* SDA3 */
-
-
-/* DIVERSES */
-		pin_101 = "cam_d2.gpio_101", "IDIS", "PTD", "DIS"; 	/* (Orange) LED */  
-		pin_102 = "cam_d3.gpio_102", "IDIS", "PTD", "DIS";  /* (Red) LED1 */
-		pin_103 = "cam_d4.gpio_103", "IDIS", "PTD", "DIS"; /* (Yellow) LED2 */
-		pin_104 = "cam_d5.gpio_104", "IDIS", "PTD", "DIS"; /* (Green) LED3 */
-		pin_105 = "cam_d6.gpio_105", "IEN", "PTD", "DIS"; /* Push Button*/
-		pin_163 = "uart3_cts_rctx.gpio_163", "IEN", "PTD", "DIS"; /* II2 Reset */
-		pin_26 = "etk_d12.gpio_26", "IEN", "PTD", "DIS"; /* RS232 Reset */
-	};
+	netcard: AX88796BLI@ffdf0000 {
+    compatible = "ax88796_dt";
+    reg = <0xffdf0000 0x1000> ;
+ 
+     //reg = address of device and size 
+     //(Minimum is System's Pagesize = 0x1000 Byte in my case
 
 };
 
+	watchdog_max: watchdog {
+		compatible = "linux,wdt-gpio";
+		gpios = <&gpio4 21 1>; //117
+		hw_algo = "toggle";
+		always-running;
+		hw_margin_ms = <900>;
+	};
+/*	usb2512b@2c {*/
+/*		compatible = "microchip,usb2517";*/
+/*//		reg = <0x2c>;*/
+/*		reset-gpios = <&gpio1 27 GPIO_ACTIVE_LOW>;*/
+/*	};*/
+		hsusb1_phy: hsusb1_phy {
+		status = "disabled";
+	};
+
+	/* HS USB Host PHY on PORT 2 */
+	hsusb2_phy: hsusb2_phy {
+		status = "disabled";
+	};
+	/* fixed 19.2MHz oscillator */
+	hfclk_19m2: oscillator {
+		#clock-cells = <0>;
+		compatible = "fixed-clock";
+		clock-frequency = <19200000>;
+	};
+leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&led_pins>;
+		led_sm {
+			label = "led_sm";
+			gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>; /* 101 */
+			default-state = "on";
+			
+		};
+		led1 {
+			label = "led1";
+			gpios = <&gpio4 6 GPIO_ACTIVE_HIGH>; /* 102 */
+			linux,default-trigger = "cpu";
+		};
+		led2 {
+			label = "led2";
+			gpios = <&gpio4 7 GPIO_ACTIVE_HIGH>; /* 103 */
+			linux,default-trigger = "mmc0";
+		};
+		led3 {
+			label = "led3";
+			gpios = <&gpio4 8 GPIO_ACTIVE_HIGH>; /* 104 */
+			linux,default-trigger = "usb-host";
+		};
+		
+		led_usb {
+			label = "led_usb";
+			gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>; /* 110 */
+			default-state = "on";
+		};
+	};
+};
+&gpmc {
+	ranges = <0 0 0x30000000 0x1000000	/* CS0 space, 16MB */
+		  255 0 0x6e000000 0x02d4>;	/* register space */
+
+	/* Chip select 0 */
+	nand@0,0 {
+		compatible = "ti,omap2-nand";
+		reg = <0 0 4		/* NAND I/O window, 4 bytes */
+		       255 0 0x02d4>;	/* GPMC register space */
+		interrupts = <20>;
+		ti,nand-ecc-opt = "bch4";
+		nand-bus-width = <16>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		gpmc,cs-on-ns = <0>;
+		gpmc,cs-rd-off-ns = <36>;
+		gpmc,cs-wr-off-ns = <36>;
+		gpmc,adv-on-ns = <6>;
+		gpmc,adv-rd-off-ns = <24>;
+		gpmc,adv-wr-off-ns = <36>;
+		gpmc,oe-on-ns = <6>;
+		gpmc,oe-off-ns = <48>;
+		gpmc,we-on-ns = <6>;
+		gpmc,we-off-ns = <30>;
+		gpmc,rd-cycle-ns = <72>;
+		gpmc,wr-cycle-ns = <72>;
+		gpmc,access-ns = <54>;
+		gpmc,wr-access-ns = <30>;
+
+		partition@0 {
+			label = "X-Loader";
+			reg = <0 0x40000>;
+		};
+		partition@40000 {
+			label = "U-Boot";
+			reg = <0x40000 0x100000>;
+		};
+		partition@100000 {
+			label = "U-Boot Env";
+			reg = <0x100000 0x120000>;
+		};
+		partition@120000 {
+			label = "dt";
+			reg = <0x120000 0x140000>;
+		};
+		partition@140000 {
+			label = "Kernel";
+			reg = <0x140000 0xB40000>;
+		};
+		partition@B40000 {
+			label = "Filesystem";
+			reg = <0xB40000 0xf4c0000>;
+		};
+	};
+};
+&usbhshost {
+	status = "disabled";
+};
+&omap3_pmx_core {
+/*	uart3_pins: pinmux_uart3_pins {*/
+/*		pinctrl-single,pins = <*/
+/*			OMAP3_CORE1_IOPAD(0x219e, PIN_INPUT  | MUX_MODE0)	// uart3_rx_irrx.uart3_rx_irrx */
+/*			OMAP3_CORE1_IOPAD(0x21a0, PIN_OUTPUT | MUX_MODE0)	// uart3_tx_irtx.uart3_tx_irtx */
+/*		>;*/
+/*	};*/
+		mmc1_pins: pinmux_mmc1_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x2144, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_clk.sdmmc1_clk */
+			OMAP3_CORE1_IOPAD(0x2146, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_cmd.sdmmc1_cmd */
+			OMAP3_CORE1_IOPAD(0x2148, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat0.sdmmc1_dat0 */
+			OMAP3_CORE1_IOPAD(0x214a, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat1.sdmmc1_dat1 */
+			OMAP3_CORE1_IOPAD(0x214c, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat2.sdmmc1_dat2 */
+			OMAP3_CORE1_IOPAD(0x214e, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc1_dat3.sdmmc1_dat3 */
+		>;
+	};
+	wd_pins: pinmux_wd_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x213e, PIN_OUTPUT | MUX_MODE4)	// CONTROL_PADCONF_MCBSP2_CLKX	0x013E 
+		>;
+	};
+	i2c1_pins: pinmux_i2c1_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x21ba, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_scl */
+			OMAP3_CORE1_IOPAD(0x21bc, PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c1_sda */
+		>;
+	};
+ 	hsusb0_pins: pinmux_hsusb0_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x21a2, PIN_INPUT_PULLDOWN | MUX_MODE0)		/* hsusb0_clk.hsusb0_clk */
+			OMAP3_CORE1_IOPAD(0x21a4, PIN_OUTPUT | MUX_MODE0)		/* hsusb0_stp.hsusb0_stp */
+			OMAP3_CORE1_IOPAD(0x21a6, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_dir.hsusb0_dir */
+			OMAP3_CORE1_IOPAD(0x21a8, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_nxt.hsusb0_nxt */
+			OMAP3_CORE1_IOPAD(0x21aa, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data0.hsusb2_data0 */
+			OMAP3_CORE1_IOPAD(0x21ac, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data1.hsusb0_data1 */
+			OMAP3_CORE1_IOPAD(0x21ae, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data2.hsusb0_data2 */
+			OMAP3_CORE1_IOPAD(0x21b0, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data7.hsusb0_data3 */
+			OMAP3_CORE1_IOPAD(0x21b2, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data7.hsusb0_data4 */
+			OMAP3_CORE1_IOPAD(0x21b4, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data7.hsusb0_data5 */
+			OMAP3_CORE1_IOPAD(0x21b6, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data7.hsusb0_data6 */
+			OMAP3_CORE1_IOPAD(0x21b8, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* hsusb0_data7.hsusb0_data7 */
+		>;
+	};
+	led_pins: pinmux_led_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x211a, PIN_OUTPUT | MUX_MODE4)	/* gpio101*/
+			OMAP3_CORE1_IOPAD(0x211c, PIN_OUTPUT | MUX_MODE4)	/* gpio102*/
+			OMAP3_CORE1_IOPAD(0x211e, PIN_OUTPUT | MUX_MODE4)	/* gpio103 */
+			OMAP3_CORE1_IOPAD(0x2120, PIN_OUTPUT | MUX_MODE4)	/* gpio103 */
+		>;
+	};
+		gpio_pins: pinmux_gpio_pins {
+		pinctrl-single,pins = <
+			OMAP3_CORE1_IOPAD(0x2122, PIN_INPUT | MUX_MODE4)	/* gpio105 spontanmeldung*/
+			OMAP3_CORE1_IOPAD(0x212c, PIN_OUTPUT | MUX_MODE4)	/* gpio110 usb2_en*/
+			OMAP3_CORE1_IOPAD(0x218C, PIN_OUTPUT | MUX_MODE4)	/* GPO0*/
+			OMAP3_CORE1_IOPAD(0x218E, PIN_OUTPUT | MUX_MODE4)	/* GPO1*/
+			OMAP3_CORE1_IOPAD(0x2190, PIN_OUTPUT | MUX_MODE4)	/* GPO2*/
+			OMAP3_CORE1_IOPAD(0x2192, PIN_OUTPUT | MUX_MODE4)	/* GPO3*/
+			OMAP3_CORE1_IOPAD(0x2194, PIN_OUTPUT | MUX_MODE4)	/* GPO4*/
+			OMAP3_CORE1_IOPAD(0x2196, PIN_OUTPUT | MUX_MODE4)	/* GPO5*/
+			OMAP3_CORE1_IOPAD(0x2198, PIN_OUTPUT | MUX_MODE4)	/* GPO6*/
+			OMAP3_CORE1_IOPAD(0x2116, PIN_INPUT | MUX_MODE4) //IN1
+			OMAP3_CORE1_IOPAD(0x2118, PIN_INPUT | MUX_MODE4) //IN2
+			OMAP3_CORE1_IOPAD(0x2124, PIN_INPUT | MUX_MODE4) //IN3
+			OMAP3_CORE1_IOPAD(0x2126, PIN_INPUT | MUX_MODE4) //IN4
+			OMAP3_CORE1_IOPAD(0x2128, PIN_INPUT | MUX_MODE4) //IN5
+			OMAP3_CORE1_IOPAD(0x25F4, PIN_OUTPUT | MUX_MODE4)	/* RES_RS232*/
+			OMAP3_CORE1_IOPAD(0x25F6, PIN_OUTPUT | MUX_MODE4)	/* HUB_RESET*/
+
+		>;
+	};
+	
+};
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pins>;
+
+	clock-frequency = <100000>;
+	twl: twl@48 {
+		reg = <0x48>;
+		interrupts = <7>; /* SYS_NIRQ cascaded to intc */
+		interrupt-parent = <&intc>;
+		
+		clocks = <&hfclk_19m2>;
+		clock-names = "fck";
+		
+		twl_power: power {
+			compatible = "ti,twl4030-power";
+			ti,system-power-controller;
+		};
+
+
+	};
+};
+&i2c2 {
+	clock-frequency = <100000>;
+	rtc8564: rtc8564@51 {
+		compatible = "epson,rtc8564";
+		reg = <0x51>;
+		#clock-cells = <0>;
+	};
+};
+&i2c3 {
+	clock-frequency = <100000>;
+};
+#include "twl4030.dtsi"
+#include "twl4030_omap3.dtsi"
+&mmc1 {
+	vmmc-supply = <&vmmc1>;
+	vqmmc-supply = <&vsim>;
+	bus-width = <4>;
+};
+&mmc2 {
+	status = "disabled";
+};
+
+&mmc3 {
+	status = "disabled";
+};
+&uart1 {
+	pinctrl-names = "default";
+//	pinctrl-0 = <&uart1_pins>;
+};
+&uart2 {
+	pinctrl-names = "default";
+//	pinctrl-0 = <&uart2_pins>;
+};
+&uart3 {
+	pinctrl-names = "default";
+//	pinctrl-0 = <&uart3_pins>;
+};
+
+
+
+
+&usb_otg_hs {
+	pinctrl-names = "default";
+	pinctrl-0 = <&hsusb0_pins>;
+	num-eps = <16>;
+ 	ram-bits = <12>;
+	interface-type = <0>;
+	usb-phy = <&usb2_phy>;
+	phys = <&usb2_phy>;
+	phy-names = "usb2-phy";
+	mode = <1>;
+	power = <500>;
+};
+
+&iva {
+	status = "disabled";
+};
+
+
+&vaux2 {
+	regulator-name = "usb_1v8";
+	regulator-min-microvolt = <1800000>;
+	regulator-max-microvolt = <1800000>;
+	regulator-always-on;
+};
