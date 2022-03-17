@@ -107,14 +107,17 @@ int board_init(void)
 	gd->bd->bi_boot_params = (OMAP34XX_SDRC_CS0 + 0x100);
 
 printf("Support InnoRoute.de\n");
-
+// init power
 	twl4030_power_init();
+// unprotect Power registers
 	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
 			     TWL4030_PM_MASTER_PROTECT_KEY, 0xC0);
 	twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
 			     TWL4030_PM_MASTER_PROTECT_KEY, 0x0C);
+// enable HF 19,5MhZ CLK (need for VBUS!)
 		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
-			     TWL4030_PM_MASTER_CFG_BOOT, 0x19);	
+			     TWL4030_PM_MASTER_CFG_BOOT, 0x19);
+// protect power registers	
 		twl4030_i2c_write_u8(TWL4030_CHIP_PM_MASTER,
 			     TWL4030_PM_MASTER_PROTECT_KEY, 0x00);	
 	return 0;
